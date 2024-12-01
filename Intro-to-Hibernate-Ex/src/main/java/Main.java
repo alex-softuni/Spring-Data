@@ -1,3 +1,4 @@
+import entities.Address;
 import entities.Employee;
 import entities.Town;
 import jakarta.persistence.EntityManager;
@@ -17,18 +18,36 @@ public class Main {
         EntityManager entityManager = emf.createEntityManager();
         entityManager.getTransaction().begin();
 
-        employeesFromDepartment(entityManager);
+        newAddress(entityManager);
+
         entityManager.getTransaction().commit();
         entityManager.close();
+    }
+
+    private static void newAddress(EntityManager entityManager) {
+        /*
+        1.Persisting new Address in the database
+        2.Changing employee address by last name
+         */
+        String lastName = SCANNER.nextLine();
+        Address address = new Address();
+        address.setText("Vitoshka 15");
+        entityManager.persist(address);
+
+        Employee employee = entityManager.createQuery("FROM Employee WHERE lastName = :lastName", Employee.class)
+                .setParameter("lastName", lastName).getSingleResult();
+        employee.setAddress(address);
+        entityManager.persist(employee);
+
     }
 
     private static void employeesFromDepartment(EntityManager entityManager) {
 
         String department = "Research and Development";
-        entityManager.createQuery("FROM Employee  WHERE department.name = :department ORDER BY salary ASC",Employee.class)
+        entityManager.createQuery("FROM Employee  WHERE department.name = :department ORDER BY salary ASC", Employee.class)
                 .setParameter("department", department)
                 .getResultStream()
-                .forEach(e -> System.out.printf("%s %s from %s - $%.2f%n",e.getFirstName(),e.getLastName(),e.getDepartment().getName(),e.getSalary()));
+                .forEach(e -> System.out.printf("%s %s from %s - $%.2f%n", e.getFirstName(), e.getLastName(), e.getDepartment().getName(), e.getSalary()));
     }
 
     private static void employeesWithSalaryOver50000(EntityManager em) {
