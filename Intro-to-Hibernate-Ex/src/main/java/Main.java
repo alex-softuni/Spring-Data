@@ -17,11 +17,16 @@ public class Main {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
 
-        // getTownsSizeBiggerThanFive(em);
-        containsEmployee(em);
+        employeesWithSalaryOver50000(em);
 
         em.getTransaction().commit();
         em.close();
+    }
+
+    private static void employeesWithSalaryOver50000(EntityManager em) {
+        em.createQuery("FROM Employee WHERE salary > 50000", Employee.class)
+                .getResultStream()
+                .forEach(e -> System.out.println(e.getFirstName()));
     }
 
     private static void containsEmployee(EntityManager em) {
