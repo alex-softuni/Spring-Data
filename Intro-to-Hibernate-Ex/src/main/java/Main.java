@@ -18,16 +18,26 @@ public class Main {
         EntityManager entityManager = emf.createEntityManager();
         entityManager.getTransaction().begin();
 
-        addressesWithEmployeeCount(entityManager);
+        getEmployeeProjects(entityManager);
 
         entityManager.getTransaction().commit();
         entityManager.close();
     }
 
+    private static void getEmployeeProjects(EntityManager entityManager) {
+        long id = SCANNER.nextLong();
+        StringBuilder sb = new StringBuilder();
+        Employee employee = entityManager.find(Employee.class, id);
+        sb.append(employee.getFirstName() + " " + employee.getLastName() + " - " + employee.getJobTitle() + "\n");
+        employee.getProjects().forEach(p -> sb.append("\t" + p.getName() + "\n"));
+
+        System.out.println(sb.toString());
+    }
+
     private static void addressesWithEmployeeCount(EntityManager entityManager) {
-       entityManager.createQuery("SELECT a FROM Address a ORDER BY size(employees) DESC ",Address.class)
-               .setMaxResults(10)
-               .getResultList().forEach(a -> System.out.printf("%s,%s - %d employees%n",a.getText(),a.getTown().getName(),a.getEmployees().size()));
+        entityManager.createQuery("SELECT a FROM Address a ORDER BY size(employees) DESC ", Address.class)
+                .setMaxResults(10)
+                .getResultList().forEach(a -> System.out.printf("%s,%s - %d employees%n", a.getText(), a.getTown().getName(), a.getEmployees().size()));
 
     }
 
