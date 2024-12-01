@@ -28,7 +28,6 @@ public class Main {
         String firstName = SCANNER.nextLine();
         String lastName = SCANNER.nextLine();
 
-
         TypedQuery<Employee> query = em.createQuery("FROM Employee WHERE firstName = :firstName AND lastName = :lastName", Employee.class)
                 .setParameter("firstName", firstName)
                 .setParameter("lastName", lastName);
