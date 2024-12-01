@@ -18,10 +18,17 @@ public class Main {
         EntityManager entityManager = emf.createEntityManager();
         entityManager.getTransaction().begin();
 
-        newAddress(entityManager);
+        addressesWithEmployeeCount(entityManager);
 
         entityManager.getTransaction().commit();
         entityManager.close();
+    }
+
+    private static void addressesWithEmployeeCount(EntityManager entityManager) {
+       entityManager.createQuery("SELECT a FROM Address a ORDER BY size(employees) DESC ",Address.class)
+               .setMaxResults(10)
+               .getResultList().forEach(a -> System.out.printf("%s,%s - %d employees%n",a.getText(),a.getTown().getName(),a.getEmployees().size()));
+
     }
 
     private static void newAddress(EntityManager entityManager) {
