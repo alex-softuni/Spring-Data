@@ -14,13 +14,21 @@ public class Main {
 
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("soft_uni");
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
+        EntityManager entityManager = emf.createEntityManager();
+        entityManager.getTransaction().begin();
 
-        employeesWithSalaryOver50000(em);
+        employeesFromDepartment(entityManager);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+    }
 
-        em.getTransaction().commit();
-        em.close();
+    private static void employeesFromDepartment(EntityManager entityManager) {
+
+        String department = "Research and Development";
+        entityManager.createQuery("FROM Employee  WHERE department.name = :department ORDER BY salary ASC",Employee.class)
+                .setParameter("department", department)
+                .getResultStream()
+                .forEach(e -> System.out.printf("%s %s from %s - $%.2f%n",e.getFirstName(),e.getLastName(),e.getDepartment().getName(),e.getSalary()));
     }
 
     private static void employeesWithSalaryOver50000(EntityManager em) {
@@ -44,8 +52,6 @@ public class Main {
         } else {
             System.out.println("Employee " + firstName + " " + lastName + " found");
         }
-
-
     }
 
     private static void getTownsSizeBiggerThanFive(EntityManager em) {
