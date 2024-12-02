@@ -19,9 +19,23 @@ public class Main {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("soft_uni");
         EntityManager entityManager = emf.createEntityManager();
         entityManager.getTransaction().begin();
-        increaseSalaries(entityManager);
+
+        findEmployeesByFirstNamePattern(entityManager);
+
         entityManager.getTransaction().commit();
         entityManager.close();
+    }
+
+    private static void findEmployeesByFirstNamePattern(EntityManager entityManager) {
+        String pattern = SCANNER.nextLine() + "%";
+
+        entityManager
+                .createQuery("FROM Employee WHERE firstName LIKE :pattern", Employee.class)
+                .setParameter("pattern", pattern)
+                .getResultStream()
+                .forEach(e -> System.out.printf("%s %s - %s - ($%.2f)%n",
+                        e.getFirstName(), e.getLastName(), e.getJobTitle(), e.getSalary()));
+
     }
 
     private static void increaseSalaries(EntityManager entityManager) {
