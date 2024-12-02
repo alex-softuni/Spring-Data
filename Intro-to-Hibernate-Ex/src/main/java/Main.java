@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,10 +19,20 @@ public class Main {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("soft_uni");
         EntityManager entityManager = emf.createEntityManager();
         entityManager.getTransaction().begin();
-
-        getLastTenProjects(entityManager);
+        increaseSalaries(entityManager);
         entityManager.getTransaction().commit();
         entityManager.close();
+    }
+
+    private static void increaseSalaries(EntityManager entityManager) {
+        List<Employee> employees = entityManager.createQuery("FROM Employee " +
+                " WHERE department.name " +
+                " IN('Engineering','Tool Design','Marketing','Information Services')", Employee.class).getResultList();
+
+        for (Employee employee : employees) {
+            employee.setSalary(employee.getSalary().multiply(BigDecimal.valueOf(1.12)));
+            entityManager.persist(employee);
+        }
     }
 
     private static void getLastTenProjects(EntityManager entityManager) {
@@ -31,7 +42,7 @@ public class Main {
                 .forEach(p -> System.out.printf("Project name: %s%n" +
                         "\tProject Description: %s%n" +
                         "\tProject Start Date: %s%n" +
-                        "\tProject End Date: %s%n",p.getName(),p.getDescription(),p.getStartDate(),p.getEndDate()));
+                        "\tProject End Date: %s%n", p.getName(), p.getDescription(), p.getStartDate(), p.getEndDate()));
     }
     //2005-09-01 00:00:00.0
 
