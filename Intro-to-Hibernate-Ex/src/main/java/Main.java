@@ -20,10 +20,41 @@ public class Main {
         EntityManager entityManager = emf.createEntityManager();
         entityManager.getTransaction().begin();
 
-        findEmployeesMaximumSalaries(entityManager);
+        removeTown(entityManager);
 
         entityManager.getTransaction().commit();
         entityManager.close();
+    }
+
+    private static void removeTown(EntityManager entityManager) {
+        String townName = SCANNER.nextLine();
+        List<Employee> employees = entityManager
+                .createQuery("FROM Employee WHERE address.town.name = :name", Employee.class)
+                .setParameter("name", townName).getResultList();
+
+        employees.forEach(e -> {
+                    e.setAddress(null);
+                    entityManager.persist(e);
+                }
+        );
+
+        List<Address> addresses = entityManager.createQuery("FROM Address WHERE town.name = :name", Address.class)
+                .setParameter("name", townName).getResultList();
+        addresses.forEach(entityManager::remove);
+
+        Town town = entityManager.createQuery("FROM Town t WHERE t.name = :name", Town.class)
+                .setParameter("name", townName).getSingleResult();
+
+        entityManager.remove(town);
+
+        StringBuilder sb = new StringBuilder();
+        if (addresses.size() > 1) {
+            sb.append(addresses.size() + " addresses in " + townName + " deleted\n");
+        } else {
+            sb.append(addresses.size() + " address in " + townName + " deleted\n");
+        }
+        System.out.println(sb.toString());
+
     }
 
     private static void findEmployeesMaximumSalaries(EntityManager entityManager) {
