@@ -1,5 +1,6 @@
 import entities.Address;
 import entities.Employee;
+import entities.Project;
 import entities.Town;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -18,11 +19,21 @@ public class Main {
         EntityManager entityManager = emf.createEntityManager();
         entityManager.getTransaction().begin();
 
-        getEmployeeProjects(entityManager);
-
+        getLastTenProjects(entityManager);
         entityManager.getTransaction().commit();
         entityManager.close();
     }
+
+    private static void getLastTenProjects(EntityManager entityManager) {
+        entityManager.createQuery("SELECT p FROM Project p ORDER BY p.startDate DESC ", Project.class)
+                .setMaxResults(10)
+                .getResultList()
+                .forEach(p -> System.out.printf("Project name: %s%n" +
+                        "\tProject Description: %s%n" +
+                        "\tProject Start Date: %s%n" +
+                        "\tProject End Date: %s%n",p.getName(),p.getDescription(),p.getStartDate(),p.getEndDate()));
+    }
+    //2005-09-01 00:00:00.0
 
     private static void getEmployeeProjects(EntityManager entityManager) {
         long id = SCANNER.nextLong();
