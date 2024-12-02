@@ -20,10 +20,18 @@ public class Main {
         EntityManager entityManager = emf.createEntityManager();
         entityManager.getTransaction().begin();
 
-        findEmployeesByFirstNamePattern(entityManager);
+        findEmployeesMaximumSalaries(entityManager);
 
         entityManager.getTransaction().commit();
         entityManager.close();
+    }
+
+    private static void findEmployeesMaximumSalaries(EntityManager entityManager) {
+        entityManager.createQuery("SELECT d.name,MAX(e.salary) FROM Department as d" +
+                        " JOIN d.employees e" +
+                        " GROUP BY d.name" +
+                        " HAVING MAX(e.salary) NOT BETWEEN 30000 AND 70000", Object[].class)
+                .getResultList().forEach(o -> System.out.printf("%s %s%n", o[0], o[1]));
     }
 
     private static void findEmployeesByFirstNamePattern(EntityManager entityManager) {
