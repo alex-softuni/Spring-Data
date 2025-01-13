@@ -7,7 +7,7 @@ public class Main {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("vehicle_hierarchy");
         EntityManager entityManager = emf.createEntityManager();
         entityManager.getTransaction().begin();
-
+        System.out.println();
         entityManager.close();
     }
 }
