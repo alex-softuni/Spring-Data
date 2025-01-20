@@ -26,6 +26,14 @@ public class CreditCard {
 
     public CreditCard() {}
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public int getId() {
         return id;
     }
@@ -58,11 +66,5 @@ public class CreditCard {
         this.expriationYear = expriationYear;
     }
 
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

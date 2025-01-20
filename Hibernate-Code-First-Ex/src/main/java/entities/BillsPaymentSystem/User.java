@@ -23,13 +23,13 @@ public class User {
     @Basic(optional = false)
     private String password;
 
-    @OneToMany(mappedBy = "user", targetEntity = BillingDetail.class)
+    @OneToMany(mappedBy = "user")
     private Set<BillingDetail> billingDetails;
 
-    @OneToMany(mappedBy = "user", targetEntity = BankAccount.class)
+    @OneToMany(mappedBy = "user")
     private Set<BankAccount> bankAccounts;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private Set<CreditCard> creditCards;
 
     public User() {

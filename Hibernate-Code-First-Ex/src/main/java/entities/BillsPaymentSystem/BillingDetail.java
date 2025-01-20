@@ -17,6 +17,14 @@ public class BillingDetail {
 
     public BillingDetail() {}
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public int getId() {
         return id;
     }
@@ -31,13 +39,5 @@ public class BillingDetail {
 
     public void setNumber(int number) {
         this.number = number;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }
