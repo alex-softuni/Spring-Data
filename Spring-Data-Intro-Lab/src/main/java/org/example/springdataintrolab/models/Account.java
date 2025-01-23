@@ -15,8 +15,13 @@ public class Account {
     private BigDecimal balance;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
+
+    public Account(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    public Account() {}
 
     public User getUser() {
         return user;

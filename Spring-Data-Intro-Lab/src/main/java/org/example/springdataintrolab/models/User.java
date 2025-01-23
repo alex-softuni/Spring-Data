@@ -18,11 +18,23 @@ public class User {
     @Basic
     private int age;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Account> accounts;
 
     public User() {
         this.accounts = new ArrayList<>();
+    }
+
+    public User(String pesho, int age) {
+        this.username = pesho;
+        this.age = age;
+    }
+
+    public User(int id, String username, int age, List<Account> accounts) {
+        this.id = id;
+        this.username = username;
+        this.age = age;
+        this.accounts = accounts;
     }
 
     public int getId() {
