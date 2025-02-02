@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -32,12 +35,12 @@ public class AuthorServiceImpl implements AuthorService {
                 .readAllLines(Path.of(AUTHORS_PATH))
                 .forEach(line -> {
 
-            String[] data = line.split("\\s+");
+                    String[] data = line.split("\\s+");
 
-            Author author = new Author(data[0], data[1]);
-            authorRepository.save(author);
+                    Author author = new Author(data[0], data[1]);
+                    authorRepository.save(author);
 
-        });
+                });
     }
 
     @Override
@@ -50,4 +53,17 @@ public class AuthorServiceImpl implements AuthorService {
                 .findById(randomId)
                 .orElse(null);
     }
+
+    @Override
+    public List<Author> getAuthorsByBooksCountDesc() {
+        return this.authorRepository.findAllByBooksOrderByBooksCountDesc();
+
+    }
+
+    @Override
+    public List<Author> getAuthorsByBooksReleaseDateBefore(LocalDate date) {
+        return this.authorRepository.getAuthorsByBooksReleaseDateBefore(date);
+    }
+
+
 }
