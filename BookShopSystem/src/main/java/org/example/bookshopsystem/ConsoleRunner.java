@@ -1,11 +1,14 @@
 package org.example.bookshopsystem;
 
 import org.example.bookshopsystem.models.Author;
+import org.example.bookshopsystem.models.Book;
 import org.example.bookshopsystem.services.AuthorService;
 import org.example.bookshopsystem.services.BookService;
 import org.example.bookshopsystem.services.CategoryService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class ConsoleRunner implements CommandLineRunner {
@@ -31,6 +34,8 @@ public class ConsoleRunner implements CommandLineRunner {
 //                .forEach(author -> System.out.println(author.getFirstName() + " " + author.getLastName()));
 //        authorService.getAuthorsByBooksCountDesc()
 //                .forEach(a -> System.out.println(a.getFirstName() + " " + a.getLastName() + " books count: " + a.getBooks().size()));
+//        this.bookService.findAllByAuthor_FirstNameAndAuthor_LastNameOrderByReleaseDateDescTitleAsc("George", "Powell")
+//                .forEach(b -> System.out.println(b.getTitle() + " " + b.getReleaseDate() + " " + b.getCopies() + " copies"));
 
     }
 }

@@ -60,6 +60,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     }
 
+
     @Override
     public List<Author> getAuthorsByBooksReleaseDateBefore(LocalDate date) {
         return this.authorRepository.getAuthorsByBooksReleaseDateBefore(date);

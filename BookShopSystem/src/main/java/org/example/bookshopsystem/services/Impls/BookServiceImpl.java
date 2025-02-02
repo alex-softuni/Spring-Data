@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -70,6 +71,11 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Set<Book> getBooksAfter() {
-        return bookRepository.findAllBooksByReleaseDateAfterOrderByReleaseDateDesc(LocalDate.of(2000,12,31));
+        return bookRepository.findAllBooksByReleaseDateAfterOrderByReleaseDateDesc(LocalDate.of(2000, 12, 31));
+    }
+
+    @Override
+    public List<Book> findAllByAuthor_FirstNameAndAuthor_LastNameOrderByReleaseDateDescTitleAsc(String firstName, String lastName) {
+        return this.bookRepository.findAllByAuthor_FirstNameAndAuthor_LastNameOrderByReleaseDateDescTitleAsc(firstName, lastName);
     }
 }
