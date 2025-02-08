@@ -1,5 +1,7 @@
 package com.example.advquerying.entities;
+
 import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.Set;
 
@@ -65,5 +67,14 @@ public class Shampoo extends BaseEntity {
 
     public void setIngredients(Set<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    @Override
+    public String toString() {
+        return "Shampoo{" +
+                "brand='" + brand + '\'' +
+                ", price=" + price +
+                ", size=" + size +
+                ", label=" + label.getTitle() + '}' + "\n";
     }
 }
