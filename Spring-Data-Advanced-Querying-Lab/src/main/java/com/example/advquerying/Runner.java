@@ -1,19 +1,11 @@
 package com.example.advquerying;
 
-import com.example.advquerying.entities.Ingredient;
-import com.example.advquerying.entities.Label;
-import com.example.advquerying.entities.Shampoo;
-import com.example.advquerying.entities.Size;
 import com.example.advquerying.repositories.LabelRepository;
 import com.example.advquerying.services.IngredientService;
-import com.example.advquerying.services.LabelService;
 import com.example.advquerying.services.ShampooService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
 
 @Component
 public class Runner implements CommandLineRunner {
