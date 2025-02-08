@@ -34,8 +34,8 @@ public class ConsoleRunner implements CommandLineRunner {
 //                .forEach(author -> System.out.println(author.getFirstName() + " " + author.getLastName()));
 //        authorService.getAuthorsByBooksCountDesc()
 //                .forEach(a -> System.out.println(a.getFirstName() + " " + a.getLastName() + " books count: " + a.getBooks().size()));
-//        this.bookService.findAllByAuthor_FirstNameAndAuthor_LastNameOrderByReleaseDateDescTitleAsc("George", "Powell")
-//                .forEach(b -> System.out.println(b.getTitle() + " " + b.getReleaseDate() + " " + b.getCopies() + " copies"));
+        this.bookService.findAllByAuthor_FirstNameAndAuthor_LastNameOrderByReleaseDateDescTitleAsc("George", "Powell")
+                .forEach(b -> System.out.println(b.getTitle() + " " + b.getReleaseDate() + " " + b.getCopies() + " copies"));
 
     }
 }
