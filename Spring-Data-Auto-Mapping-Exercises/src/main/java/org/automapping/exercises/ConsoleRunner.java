@@ -1,12 +1,17 @@
 package org.automapping.exercises;
 
+import org.automapping.exercises.service.GameService;
 import org.automapping.exercises.service.UserService;
+import org.automapping.exercises.service.dtos.AddGameDTO;
 import org.automapping.exercises.service.dtos.UserLoginDTO;
 import org.automapping.exercises.service.dtos.UserRegisterDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 @Component
@@ -14,10 +19,12 @@ public class ConsoleRunner implements CommandLineRunner {
     private static final Scanner sc = new Scanner(System.in);
 
     private final UserService userService;
+    private final GameService gameService;
 
     @Autowired
-    public ConsoleRunner(UserService userService) {
+    public ConsoleRunner(UserService userService, GameService gameService) {
         this.userService = userService;
+        this.gameService = gameService;
     }
 
     @Override
@@ -36,6 +43,9 @@ public class ConsoleRunner implements CommandLineRunner {
                     break;
                 case "Logout":
                     command = userService.Logout();
+                    break;
+                case "AddGame":
+                    command = gameService.addGame(new AddGameDTO(tokens[1], new BigDecimal(tokens[2]),Double.parseDouble(tokens[3]),tokens[4],tokens[5],tokens[6], LocalDate.parse(tokens[7], DateTimeFormatter.ofPattern("dd-MM-yyyy"))));
                     break;
 
 
