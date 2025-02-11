@@ -1,6 +1,7 @@
 package org.automapping.exercises;
 
 import org.automapping.exercises.service.UserService;
+import org.automapping.exercises.service.dtos.UserLoginDTO;
 import org.automapping.exercises.service.dtos.UserRegisterDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -30,11 +31,16 @@ public class ConsoleRunner implements CommandLineRunner {
                 case "RegisterUser":
                     command = userService.RegisterUser(new UserRegisterDTO(tokens[1], tokens[2], tokens[3], tokens[4]));
                     break;
+                case "LoginUser":
+                    command = userService.LoginUser(new UserLoginDTO(tokens[1], tokens[2]));
+                    break;
+                case "Logout":
+                    command = userService.Logout();
+                    break;
 
 
             }
             System.out.println(command);
-            line = sc.nextLine();
         }
     }
 }

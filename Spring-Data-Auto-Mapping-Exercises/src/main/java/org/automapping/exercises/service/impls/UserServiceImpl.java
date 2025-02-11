@@ -4,6 +4,7 @@ import jakarta.validation.ConstraintViolation;
 import org.automapping.exercises.data.entities.User;
 import org.automapping.exercises.data.repositories.UserRepository;
 import org.automapping.exercises.service.UserService;
+import org.automapping.exercises.service.dtos.UserLoginDTO;
 import org.automapping.exercises.service.dtos.UserRegisterDTO;
 import org.automapping.exercises.util.ValidatorService;
 import org.modelmapper.ModelMapper;
@@ -15,6 +16,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
+    private User currentLoggedInUser;
+
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
     private final ValidatorService validatorService;
@@ -47,9 +50,39 @@ public class UserServiceImpl implements UserService {
         return String.format("Successfully registered %s", user.getFullName());
     }
 
+    @Override
+    public String LoginUser(UserLoginDTO userLoginDTO) {
+        Optional<User> optional = this.userRepository.findByEmailAndPassword(userLoginDTO.getEmail(), userLoginDTO.getPassword());
+        if (!optional.isPresent()) {
+            return "Email or password incorrect.";
+        }
+
+        this.setCurrentLoggedInUser(optional.get());
+        return String.format("Successfully logged in: %s.", this.getCurrentLoggedInUser().getFullName());
+    }
+
+    @Override
+    public String Logout() {
+        if (this.currentLoggedInUser == null) {
+            return "You are not logged in.";
+        }
+        String username = this.currentLoggedInUser.getFullName();
+        this.currentLoggedInUser = null;
+        return String.format("User: %s successfully logged out.", username);
+    }
+
     private void setAdminIfUserIsFirst(User toPersist) {
         if (this.userRepository.count() == 0) {
             toPersist.setAdmin(true);
         }
+    }
+
+
+    public User getCurrentLoggedInUser() {
+        return this.currentLoggedInUser;
+    }
+
+    public void setCurrentLoggedInUser(User currentLoggedInUser) {
+        this.currentLoggedInUser = currentLoggedInUser;
     }
 }

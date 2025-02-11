@@ -5,14 +5,15 @@ import jakarta.validation.constraints.Size;
 
 public class UserRegisterDTO {
 
-    @Pattern(regexp = "\\w+@\\w+\\.\\w+")
+    @Pattern(regexp = "\\w+@\\w+\\.\\w+",message = "Email doesn't match the given pattern")
     private String email;
 
-    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*", message = "Password doesn't matches the given pattern.")
+    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*", message = "Password doesn't match the given pattern.")
     @Size(min = 6, message = "Password needs to be at least 6 symbol.")
     private String password;
 
     private String confirmPassword;
+
     private String fullName;
 
     public UserRegisterDTO(String email, String password, String confirmPassword, String fullName) {
