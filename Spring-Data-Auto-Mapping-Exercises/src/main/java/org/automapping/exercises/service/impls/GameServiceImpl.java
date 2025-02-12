@@ -44,9 +44,10 @@ public class GameServiceImpl implements GameService {
         return "Game: " + game.getTitle() + " added successfully!";
     }
 
+
     @Override
-    public String EditGame(Integer id, Map<String, String> map) {
-        Optional<Game> optional = this.gameRepository.findById(Long.valueOf(id));
+    public String EditGame(Long id, Map<String, String> map) {
+        Optional<Game> optional = this.gameRepository.findById(id);
         if (optional.isEmpty()) {
             return "The game does not exist!";
         }
@@ -68,5 +69,16 @@ public class GameServiceImpl implements GameService {
 
         this.gameRepository.saveAndFlush(game);
         return "Edited " + game.getTitle();
+    }
+
+    @Override
+    public String DeleteGame(long id) {
+        Optional<Game> optional = this.gameRepository.findById(id);
+        if (optional.isEmpty()) {
+            return "The game does not exist!";
+        }
+        this.gameRepository.delete(optional.get());
+        this.gameRepository.flush();
+        return "Deleted " + optional.get().getTitle();
     }
 }

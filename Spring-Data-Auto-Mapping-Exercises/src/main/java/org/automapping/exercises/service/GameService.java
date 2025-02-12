@@ -8,5 +8,7 @@ import java.util.Map;
 public interface GameService {
     String addGame(AddGameDTO addGameDTO);
 
-    String EditGame(Integer id, Map<String, String> map);
+    String EditGame(Long id, Map<String, String> map);
+
+    String DeleteGame(long id);
 }

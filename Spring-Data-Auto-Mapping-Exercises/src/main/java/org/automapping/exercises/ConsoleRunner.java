@@ -53,9 +53,11 @@ public class ConsoleRunner implements CommandLineRunner {
                 case "EditGame":
                     Map<String, String> map = Arrays.stream(tokens).skip(2).map(p -> p.split("="))
                             .collect(Collectors.toMap(p -> p[0], p -> p[1]));
-                    command = gameService.EditGame(Integer.parseInt(tokens[1]), map);
+                    command = gameService.EditGame(Long.parseLong(tokens[1]), map);
                     break;
-
+                case "DeleteGame":
+                    command = gameService.DeleteGame(Long.parseLong(tokens[1]));
+                    break;
 
             }
             System.out.println(command);
