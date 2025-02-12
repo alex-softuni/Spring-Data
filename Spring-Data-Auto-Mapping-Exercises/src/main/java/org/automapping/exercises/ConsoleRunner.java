@@ -12,7 +12,10 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 @Component
 public class ConsoleRunner implements CommandLineRunner {
@@ -45,7 +48,12 @@ public class ConsoleRunner implements CommandLineRunner {
                     command = userService.Logout();
                     break;
                 case "AddGame":
-                    command = gameService.addGame(new AddGameDTO(tokens[1], new BigDecimal(tokens[2]),Double.parseDouble(tokens[3]),tokens[4],tokens[5],tokens[6], LocalDate.parse(tokens[7], DateTimeFormatter.ofPattern("dd-MM-yyyy"))));
+                    command = gameService.addGame(new AddGameDTO(tokens[1], new BigDecimal(tokens[2]), Double.parseDouble(tokens[3]), tokens[4], tokens[5], tokens[6], LocalDate.parse(tokens[7], DateTimeFormatter.ofPattern("dd-MM-yyyy"))));
+                    break;
+                case "EditGame":
+                    Map<String, String> map = Arrays.stream(tokens).skip(2).map(p -> p.split("="))
+                            .collect(Collectors.toMap(p -> p[0], p -> p[1]));
+                    command = gameService.EditGame(Integer.parseInt(tokens[1]), map);
                     break;
 
 

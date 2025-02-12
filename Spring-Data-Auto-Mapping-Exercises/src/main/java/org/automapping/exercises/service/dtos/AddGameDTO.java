@@ -21,7 +21,7 @@ public class AddGameDTO {
     @Size(min = 11, max = 11)
     private String trailer;
 
-    @Pattern(regexp = "\"^(?:http://)*(?:https://)*.+\"", message = "Invalid URL ---> Valid URL start with 'http://' or 'https://'")
+    @Pattern(regexp = "^(?:http://)*(?:https://)*.+", message = "Invalid URL ---> Valid URL start with 'http://' or 'https://'")
     private String thumbnail_url;
 
     @Size(min = 20, message = "Description must be at least 20 symbols")
