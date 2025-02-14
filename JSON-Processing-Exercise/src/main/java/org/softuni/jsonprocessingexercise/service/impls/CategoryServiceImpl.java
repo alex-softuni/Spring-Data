@@ -6,11 +6,9 @@ import org.softuni.jsonprocessingexercise.model.entities.Category;
 import org.softuni.jsonprocessingexercise.service.dtos.CategorySeedDto;
 import org.softuni.jsonprocessingexercise.model.repositories.CategoryRepository;
 import org.softuni.jsonprocessingexercise.service.CategoryService;
-import org.softuni.jsonprocessingexercise.service.dtos.ProductSeedDto;
 import org.softuni.jsonprocessingexercise.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,9 +35,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void seedCategories() throws IOException {
         if (this.categoryRepository.count() == 0) {
-            String fileContent = Files.readString(Path.of(FILE_PATH));
-            CategorySeedDto[] productSeedDtos = gson.fromJson(fileContent, CategorySeedDto[].class);
-            for (CategorySeedDto categorySeedDto : productSeedDtos) {
+
+            CategorySeedDto[] categorySeedDtos = gson.fromJson(Files.readString(Path.of(FILE_PATH)), CategorySeedDto[].class);
+
+            for (CategorySeedDto categorySeedDto : categorySeedDtos) {
                 if (!this.validationUtil.isValid(categorySeedDto)) {
                     this.validationUtil.getViolations(categorySeedDto)
                             .forEach(v -> System.out.println(v.getMessage()));

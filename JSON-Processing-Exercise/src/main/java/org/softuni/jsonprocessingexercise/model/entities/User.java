@@ -21,7 +21,7 @@ public class User extends BaseEntity {
     @ManyToMany
     @JoinTable(name = "users_friends",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "firend_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "friend_id", referencedColumnName = "id"))
     private Set<User> friends;
 
     public String getFirstName() {

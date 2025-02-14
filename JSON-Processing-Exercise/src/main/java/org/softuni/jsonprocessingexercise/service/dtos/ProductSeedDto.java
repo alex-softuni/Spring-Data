@@ -2,6 +2,7 @@ package org.softuni.jsonprocessingexercise.service.dtos;
 
 import com.google.gson.annotations.Expose;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
@@ -12,6 +13,8 @@ public class ProductSeedDto {
     @Size(min = 3)
     private String name;
     @Expose
+    @NotNull
+    @Positive
     private BigDecimal price;
 
     public String getName() {

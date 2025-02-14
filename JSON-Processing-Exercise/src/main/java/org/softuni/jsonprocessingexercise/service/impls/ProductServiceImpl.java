@@ -45,11 +45,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void seedProducts() throws IOException {
+
         if (productRepository.count() == 0) {
-            String fileContent = Files.readString(Path.of(FILE_PATH));
-            ProductSeedDto[] productSeedDtos = gson.fromJson(fileContent, ProductSeedDto[].class);
-            //Improves performance drastically avoiding database calls (save)
-            // by savingAll :)))
+
+            ProductSeedDto[] productSeedDtos = gson.fromJson(Files.readString(Path.of(FILE_PATH)), ProductSeedDto[].class);
+
+            //Improves performance drastically avoids repeated DB calls by savingAll :)))
             List<Product> products = new ArrayList<>();
 
             for (ProductSeedDto productSeedDto : productSeedDtos) {

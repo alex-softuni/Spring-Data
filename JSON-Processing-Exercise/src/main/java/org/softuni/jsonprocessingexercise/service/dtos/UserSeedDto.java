@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public class UserSeedDTO {
+public class UserSeedDto {
 
     @Expose
     @NotNull
