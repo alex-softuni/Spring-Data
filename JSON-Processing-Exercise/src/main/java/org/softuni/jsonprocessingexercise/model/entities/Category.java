@@ -11,7 +11,7 @@ public class Category extends BaseEntity{
 
     @Column(nullable = false, unique = true)
     private String name;
-    @ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "categories",fetch = FetchType.EAGER)
     private Set<Product> products;
 
     public String getName() {

@@ -71,24 +71,30 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private Set<Category> getRandomCategories() {
-        Set<Category> categories = new HashSet<>();
 
-        long categoryCount = categoryRepository.count();
-        if (categoryCount == 0) return categories;  // Avoid errors if no categories exist
+        // preloading IDs to avoid repeated DB lookups
+        List<Category> allCategories = categoryRepository.findAll();
+        Set<Category> selectedCategories = new HashSet<>();
+
+        if (allCategories.isEmpty()) return selectedCategories;
 
         int randomCount = ThreadLocalRandom.current().nextInt(1, 4);
+        Collections.shuffle(allCategories);  // Shuffle to pick random unique categories
 
-        while (categories.size() < randomCount) {  // Ensure unique categories
-            long randomId = ThreadLocalRandom.current().nextLong(1, categoryCount + 1);
-            categoryRepository.findById(randomId).ifPresent(categories::add);
+        for (int i = 0; i < randomCount; i++) {
+            selectedCategories.add(allCategories.get(i));
         }
 
-        return categories;
+        return selectedCategories;
+
     }
 
     private User getRandomUser(boolean isBuyer) {
-        long randomId = ThreadLocalRandom.current().nextLong(1, this.userRepository.count() + 1);
+        List<Long> userIds = userRepository.findAllIds();  // Fetch all IDs
+        if (userIds.isEmpty()) return null;
 
-        return isBuyer && randomId % 4 == 0 ? null : this.userRepository.findById(randomId).get();
+        long randomId = userIds.get(ThreadLocalRandom.current().nextInt(userIds.size()));
+
+        return isBuyer && randomId % 4 == 0 ? null : userRepository.getReferenceById(randomId);
     }
 }
