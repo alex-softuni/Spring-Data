@@ -3,7 +3,7 @@ package org.softuni.jsonprocessingexercise.service.dtos.export;
 import com.google.gson.annotations.Expose;
 import java.math.BigDecimal;
 
-public class ProductsInRangeDTO {
+public class ProductsInRangeDto {
     @Expose
     private String name;
     @Expose

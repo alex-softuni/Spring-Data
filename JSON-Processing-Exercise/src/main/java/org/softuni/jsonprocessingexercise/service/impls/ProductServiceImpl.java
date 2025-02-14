@@ -10,7 +10,7 @@ import org.softuni.jsonprocessingexercise.model.repositories.CategoryRepository;
 import org.softuni.jsonprocessingexercise.model.repositories.ProductRepository;
 import org.softuni.jsonprocessingexercise.model.repositories.UserRepository;
 import org.softuni.jsonprocessingexercise.service.ProductService;
-import org.softuni.jsonprocessingexercise.service.dtos.export.ProductsInRangeDTO;
+import org.softuni.jsonprocessingexercise.service.dtos.export.ProductsInRangeDto;
 import org.softuni.jsonprocessingexercise.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,17 +75,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void printExportProductsInPriceRangeBetween(int min, int max) {
-        List<ProductsInRangeDTO> productsInRangeDTOs = this.productRepository.findAllByBuyerIsNullAndPriceBetweenOrderByPrice(BigDecimal.valueOf(min), BigDecimal.valueOf(max))
+        List<ProductsInRangeDto> productsInRangeDtos = this.productRepository.findAllByBuyerIsNullAndPriceBetweenOrderByPrice(BigDecimal.valueOf(min), BigDecimal.valueOf(max))
                 .stream()
                 .map(p -> {
-
-                    ProductsInRangeDTO dto = this.modelMapper.map(p, ProductsInRangeDTO.class);
+                    ProductsInRangeDto dto = this.modelMapper.map(p, ProductsInRangeDto.class);
                     dto.setSeller(p.getSeller().getFirstName() + " " + p.getSeller().getLastName());
                     return dto;
                 }).toList();
 
 
-        this.gson.toJson(productsInRangeDTOs, System.out);
+        this.gson.toJson(productsInRangeDtos, System.out);
     }
 
     private Set<Category> getRandomCategories() {
