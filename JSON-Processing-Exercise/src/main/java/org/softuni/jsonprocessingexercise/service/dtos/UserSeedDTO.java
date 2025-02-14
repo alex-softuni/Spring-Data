@@ -1,23 +1,19 @@
-package org.softuni.jsonprocessingexercise.model.dtos;
+package org.softuni.jsonprocessingexercise.service.dtos;
 
 import com.google.gson.annotations.Expose;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class UserSeedDTO {
 
     @Expose
-    private String firstName;
-    @Expose
+    @NotNull
     @Size(min = 3)
     private String lastName;
     @Expose
+    private String firstName;
+    @Expose
     private int age;
-
-    public UserSeedDTO(String firstName, String lastName, int age) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-    }
 
     public String getFirstName() {
         return firstName;

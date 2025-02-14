@@ -1,9 +1,6 @@
 package org.softuni.jsonprocessingexercise.model.entities;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 
 @MappedSuperclass
 public abstract class BaseEntity {
@@ -17,7 +14,4 @@ public abstract class BaseEntity {
         return this.id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

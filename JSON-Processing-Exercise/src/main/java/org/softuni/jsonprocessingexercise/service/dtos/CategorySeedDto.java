@@ -1,16 +1,19 @@
-package org.softuni.jsonprocessingexercise.model.dtos;
+package org.softuni.jsonprocessingexercise.service.dtos;
 
 import com.google.gson.annotations.Expose;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public class CategorySeedDTO {
+
+
+
+public class CategorySeedDto {
     @Expose
+    @NotNull
     @Size(min = 3, max = 15)
     private String name;
 
-    public CategorySeedDTO() {}
-
-    public CategorySeedDTO(String name) {
+    public CategorySeedDto(String name) {
         this.name = name;
     }
 

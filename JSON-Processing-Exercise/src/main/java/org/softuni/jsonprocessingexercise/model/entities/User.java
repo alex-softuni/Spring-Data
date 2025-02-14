@@ -2,52 +2,27 @@ package org.softuni.jsonprocessingexercise.model.entities;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
+
     @Column(name = "first_name")
     private String firstName;
-
-    @Column(name = "last_name",nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
-
     @Column
-    private int age;
-
-    @ManyToMany
-    @JoinTable(name = "users_friends",
-            joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "friend_id",referencedColumnName = "id"))
-    private Set<User> friends;
-
+    private Integer age;
     @OneToMany(mappedBy = "seller", fetch = FetchType.EAGER)
     private Set<Product> sold;
     @OneToMany(mappedBy = "buyer", fetch = FetchType.EAGER)
     private Set<Product> bought;
-
-
-    public User() {
-        this.friends = new HashSet<>();
-    }
-
-    public Set<Product> getSold() {
-        return sold;
-    }
-
-    public void setSold(Set<Product> sold) {
-        this.sold = sold;
-    }
-
-    public Set<Product> getBought() {
-        return bought;
-    }
-
-    public void setBought(Set<Product> bought) {
-        this.bought = bought;
-    }
+    @ManyToMany
+    @JoinTable(name = "users_friends",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "firend_id", referencedColumnName = "id"))
+    private Set<User> friends;
 
     public String getFirstName() {
         return firstName;
@@ -65,11 +40,11 @@ public class User extends BaseEntity {
         this.lastName = lastName;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -79,5 +54,21 @@ public class User extends BaseEntity {
 
     public void setFriends(Set<User> friends) {
         this.friends = friends;
+    }
+
+    public Set<Product> getSold() {
+        return sold;
+    }
+
+    public void setSold(Set<Product> sold) {
+        this.sold = sold;
+    }
+
+    public Set<Product> getBought() {
+        return bought;
+    }
+
+    public void setBought(Set<Product> bought) {
+        this.bought = bought;
     }
 }
