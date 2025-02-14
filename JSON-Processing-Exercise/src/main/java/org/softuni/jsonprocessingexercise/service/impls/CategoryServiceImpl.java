@@ -3,7 +3,7 @@ package org.softuni.jsonprocessingexercise.service.impls;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
 import org.softuni.jsonprocessingexercise.model.entities.Category;
-import org.softuni.jsonprocessingexercise.service.dtos.CategorySeedDto;
+import org.softuni.jsonprocessingexercise.service.dtos.Seeds.CategorySeedDto;
 import org.softuni.jsonprocessingexercise.model.repositories.CategoryRepository;
 import org.softuni.jsonprocessingexercise.service.CategoryService;
 import org.softuni.jsonprocessingexercise.util.ValidationUtil;

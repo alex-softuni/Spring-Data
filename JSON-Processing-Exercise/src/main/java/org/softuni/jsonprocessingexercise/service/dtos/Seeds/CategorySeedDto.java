@@ -1,4 +1,4 @@
-package org.softuni.jsonprocessingexercise.service.dtos;
+package org.softuni.jsonprocessingexercise.service.dtos.Seeds;
 
 import com.google.gson.annotations.Expose;
 import jakarta.validation.constraints.NotNull;

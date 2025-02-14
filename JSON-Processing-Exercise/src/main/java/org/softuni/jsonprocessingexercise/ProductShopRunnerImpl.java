@@ -6,6 +6,7 @@ import org.softuni.jsonprocessingexercise.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 
 @Component
@@ -23,12 +24,14 @@ public class ProductShopRunnerImpl implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        seedData();
+        //seedData();
+       this.productService.printExportProductsInPriceRangeBetween(500,1000);
     }
 
     private void seedData() throws IOException {
         this.categoryService.seedCategories();
         this.userService.seedUsers();
         this.productService.seedProducts();
+
     }
 }

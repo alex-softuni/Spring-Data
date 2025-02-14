@@ -1,21 +1,15 @@
-package org.softuni.jsonprocessingexercise.service.dtos;
+package org.softuni.jsonprocessingexercise.service.dtos.export;
 
 import com.google.gson.annotations.Expose;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
-
 import java.math.BigDecimal;
 
-public class ProductSeedDto {
+public class ProductsInRangeDTO {
     @Expose
-    @NotNull
-    @Size(min = 3)
     private String name;
     @Expose
-    @NotNull
-    @Positive
     private BigDecimal price;
+    @Expose
+    private String seller;
 
     public String getName() {
         return name;
@@ -31,5 +25,13 @@ public class ProductSeedDto {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getSeller() {
+        return seller;
+    }
+
+    public void setSeller(String seller) {
+        this.seller = seller;
     }
 }

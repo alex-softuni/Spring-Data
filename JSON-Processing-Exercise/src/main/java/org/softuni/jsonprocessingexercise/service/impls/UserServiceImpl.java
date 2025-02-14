@@ -2,7 +2,7 @@ package org.softuni.jsonprocessingexercise.service.impls;
 
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
-import org.softuni.jsonprocessingexercise.service.dtos.UserSeedDto;
+import org.softuni.jsonprocessingexercise.service.dtos.Seeds.UserSeedDto;
 import org.softuni.jsonprocessingexercise.model.entities.User;
 import org.softuni.jsonprocessingexercise.model.repositories.UserRepository;
 import org.softuni.jsonprocessingexercise.service.UserService;

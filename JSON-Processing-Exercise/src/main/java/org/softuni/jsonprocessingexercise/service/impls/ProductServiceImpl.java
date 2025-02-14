@@ -2,7 +2,7 @@ package org.softuni.jsonprocessingexercise.service.impls;
 
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
-import org.softuni.jsonprocessingexercise.service.dtos.ProductSeedDto;
+import org.softuni.jsonprocessingexercise.service.dtos.Seeds.ProductSeedDto;
 import org.softuni.jsonprocessingexercise.model.entities.Category;
 import org.softuni.jsonprocessingexercise.model.entities.Product;
 import org.softuni.jsonprocessingexercise.model.entities.User;
@@ -10,12 +10,14 @@ import org.softuni.jsonprocessingexercise.model.repositories.CategoryRepository;
 import org.softuni.jsonprocessingexercise.model.repositories.ProductRepository;
 import org.softuni.jsonprocessingexercise.model.repositories.UserRepository;
 import org.softuni.jsonprocessingexercise.service.ProductService;
+import org.softuni.jsonprocessingexercise.service.dtos.export.ProductsInRangeDTO;
 import org.softuni.jsonprocessingexercise.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -69,6 +71,21 @@ public class ProductServiceImpl implements ProductService {
             }
             this.productRepository.saveAll(products);
         }
+    }
+
+    @Override
+    public void printExportProductsInPriceRangeBetween(int min, int max) {
+        List<ProductsInRangeDTO> productsInRangeDTOs = this.productRepository.findAllByBuyerIsNullAndPriceBetweenOrderByPrice(BigDecimal.valueOf(min), BigDecimal.valueOf(max))
+                .stream()
+                .map(p -> {
+
+                    ProductsInRangeDTO dto = this.modelMapper.map(p, ProductsInRangeDTO.class);
+                    dto.setSeller(p.getSeller().getFirstName() + " " + p.getSeller().getLastName());
+                    return dto;
+                }).toList();
+
+
+        this.gson.toJson(productsInRangeDTOs, System.out);
     }
 
     private Set<Category> getRandomCategories() {
