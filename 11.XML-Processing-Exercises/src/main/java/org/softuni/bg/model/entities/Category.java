@@ -1,9 +1,6 @@
 package org.softuni.bg.model.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 import java.util.Set;
@@ -15,7 +12,7 @@ public class Category extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany(mappedBy = "categories",fetch = FetchType.EAGER)
     private Set<Product> products;
 
     public Category() {}

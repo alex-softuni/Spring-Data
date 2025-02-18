@@ -2,6 +2,7 @@ package org.softuni.bg.service.impls;
 
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 import org.modelmapper.ModelMapper;
 import org.softuni.bg.model.entities.Category;
@@ -11,12 +12,14 @@ import org.softuni.bg.model.repositories.CategoryRepository;
 import org.softuni.bg.model.repositories.ProductRepository;
 import org.softuni.bg.model.repositories.UserRepository;
 import org.softuni.bg.service.ProductService;
+import org.softuni.bg.service.dtos.exports.ProductsInPriceRangeDto;
+import org.softuni.bg.service.dtos.exports.ProductsInPriceRangeRootDto;
 import org.softuni.bg.service.dtos.imports.ProductSeedRootDto;
 import org.softuni.bg.util.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -58,16 +61,38 @@ public class ProductServiceImpl implements ProductService {
 
             Product product = this.modelMapper.map(dto, Product.class);
             product.setCategories(getRandomCategories());
-            product.setBuyer(getRandomUser());
-            product.setSeller(getRandomUser());
+            product.setBuyer(getRandomUser(true));
+            product.setSeller(getRandomUser(false));
             products.add(product);
         });
 
         this.productRepository.saveAll(products);
     }
 
-    private User getRandomUser() {
-        return this.userRepository.findById(ThreadLocalRandom.current().nextLong(1, this.categoryRepository.count() + 1)).orElse(null);
+    @Override
+    public void exportProductsInPriceRangeOrderedByPrice(BigDecimal lower, BigDecimal upper) throws JAXBException {
+        List<ProductsInPriceRangeDto> dto = this.productRepository.findProductsInPriceRangeOrderedByPrice(lower, upper)
+                .stream()
+                .map(p -> this.modelMapper.map(p, ProductsInPriceRangeDto.class))
+                .toList();
+
+        ProductsInPriceRangeRootDto rootDto = new ProductsInPriceRangeRootDto();
+        rootDto.setProducts(dto);
+
+        JAXBContext context = JAXBContext.newInstance(ProductsInPriceRangeRootDto.class);
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        marshaller.marshal(rootDto, System.out);
+
+    }
+
+    private User getRandomUser(boolean isBuyer) {
+        List<Long> userIds = this.userRepository.findAllIds();  // Fetch all IDs
+        if (userIds.isEmpty()) return null;
+
+        long randomId = userIds.get(ThreadLocalRandom.current().nextInt(userIds.size()));
+
+        return isBuyer && randomId % 4 == 0 ? null : this.userRepository.getReferenceById(randomId);
     }
 
     private Set<Category> getRandomCategories() {

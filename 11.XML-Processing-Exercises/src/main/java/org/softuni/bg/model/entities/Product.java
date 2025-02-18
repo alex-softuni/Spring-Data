@@ -21,7 +21,7 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
     private User seller;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "products_categories",
             joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
