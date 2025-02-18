@@ -3,6 +3,7 @@ package org.softuni.bg.model.entities;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -69,5 +70,17 @@ public class Product extends BaseEntity {
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(name, product.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(name);
     }
 }
