@@ -24,7 +24,7 @@ public class ProductShopRunnerImpl implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        //seedData();
+        seedData();
         // this.productService.printExportProductsInPriceRangeBetween(500,1000);
        // this.userService.printExportSoldProducts();
 

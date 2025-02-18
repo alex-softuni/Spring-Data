@@ -75,7 +75,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void printExportProductsInPriceRangeBetween(int min, int max) {
-        List<ProductsInRangeDto> productsInRangeDtos = this.productRepository.findAllByBuyerIsNullAndPriceBetweenOrderByPrice(BigDecimal.valueOf(min), BigDecimal.valueOf(max))
+        List<ProductsInRangeDto> productsInRangeDtos = this.productRepository
+                .findAllByBuyerIsNullAndPriceBetweenOrderByPrice(BigDecimal.valueOf(min), BigDecimal.valueOf(max))
                 .stream()
                 .map(p -> {
                     ProductsInRangeDto dto = this.modelMapper.map(p, ProductsInRangeDto.class);
