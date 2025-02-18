@@ -1,4 +1,7 @@
 package org.softuni.bg.service;
 
-public interface CategoryService {
+import jakarta.xml.bind.JAXBException;
+
+public interface CategoryService extends BaseService {
+    void seedCategories() throws JAXBException;
 }
