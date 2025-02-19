@@ -11,4 +11,10 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u.id FROM User u")
     List<Long> findAllIds();
+
+    @Query("SELECT u FROM User u " +
+            "JOIN u.sold p  " +
+            "WHERE p.buyer IS NOT NULL AND SIZE(u.sold) > 0 " +
+            "ORDER BY u.lastName,u.lastName" )
+    List<User> findAllBySoldWithBuyer();
 }

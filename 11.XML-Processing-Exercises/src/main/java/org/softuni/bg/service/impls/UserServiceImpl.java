@@ -5,12 +5,17 @@ import org.modelmapper.ModelMapper;
 import org.softuni.bg.model.entities.User;
 import org.softuni.bg.model.repositories.UserRepository;
 import org.softuni.bg.service.UserService;
+import org.softuni.bg.service.dtos.exports.SoldProductDto;
+import org.softuni.bg.service.dtos.exports.UserSoldProductsDto;
+import org.softuni.bg.service.dtos.exports.UserSoldProductsRootDto;
 import org.softuni.bg.service.dtos.imports.UserSeedDto;
 import org.softuni.bg.service.dtos.imports.UserSeedRootDto;
 import org.softuni.bg.util.ValidatorUtil;
 import org.softuni.bg.util.XmlParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -45,5 +50,24 @@ public class UserServiceImpl implements UserService {
             }
             this.userRepository.save(modelMapper.map(user, User.class));
         }
+    }
+
+    @Override
+    public void exportSoldProducts() throws JAXBException {
+
+        List<User> users = this.userRepository.findAllBySoldWithBuyer();
+        List<UserSoldProductsDto> userSoldProductsDtos = users.stream().map(u -> {
+            UserSoldProductsDto dto = this.modelMapper.map(u, UserSoldProductsDto.class);
+            List<SoldProductDto> soldDto = u.getSold().stream().map(p -> this.modelMapper.map(p, SoldProductDto.class)).toList();
+            dto.setSoldProducts(soldDto);
+            return dto;
+        }).toList();
+
+        UserSoldProductsRootDto root = new UserSoldProductsRootDto();
+        root.setUserSoldProductsDto(userSoldProductsDtos);
+        System.out.println();
+        this.xmlParser.exportToFile(root, XML_PATH);
+
+
     }
 }
