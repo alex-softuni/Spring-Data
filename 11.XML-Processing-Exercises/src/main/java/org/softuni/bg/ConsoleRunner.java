@@ -35,6 +35,7 @@ public class ConsoleRunner implements CommandLineRunner {
         }
 
         // this.productService.exportProductsInPriceRangeOrderedByPrice(BigDecimal.valueOf(500), BigDecimal.valueOf(1000));
-        this.userService.exportSoldProducts();
+       // this.userService.exportSoldProducts();
+       // this.categoryService.getCategoriesRevenueInfo();
     }
 }

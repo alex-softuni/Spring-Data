@@ -3,20 +3,28 @@ package org.softuni.bg.service.impls;
 import jakarta.xml.bind.JAXBException;
 import org.modelmapper.ModelMapper;
 import org.softuni.bg.model.entities.Category;
+import org.softuni.bg.model.entities.Product;
 import org.softuni.bg.model.repositories.CategoryRepository;
 import org.softuni.bg.service.CategoryService;
+import org.softuni.bg.service.dtos.exports.CategoriesByProductsCountDto;
+import org.softuni.bg.service.dtos.exports.CategoriesByProductsCountRootDto;
 import org.softuni.bg.service.dtos.imports.CategorySeedDto;
 import org.softuni.bg.service.dtos.imports.CategorySeedRootDto;
 import org.softuni.bg.util.ValidatorUtil;
 import org.softuni.bg.util.XmlParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
     private static final String XML_PATH = "src/main/resources/xml/categories.xml";
 
     private final CategoryRepository categoryRepository;
+
     private final ValidatorUtil validatorUtil;
     private final ModelMapper modelMapper;
     private final XmlParser xmlParser;
@@ -50,5 +58,31 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
 
+    }
+
+    @Override
+    public void getCategoriesRevenueInfo() throws JAXBException {
+        List<Category> categories = this.categoryRepository.findAllByProductsCount();
+        List<CategoriesByProductsCountDto> dtos = new ArrayList<>();
+        categories.stream().forEach(c -> {
+
+            BigDecimal sum = c.getProducts().stream()
+                    .map(Product::getPrice)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            BigDecimal avg = sum.divide(BigDecimal.valueOf(c.getProducts().size()), 2, BigDecimal.ROUND_HALF_UP);
+
+            CategoriesByProductsCountDto dto = this.modelMapper.map(c, CategoriesByProductsCountDto.class);
+            dto.setProductsCount(c.getProducts().size());
+            dto.setAveragePrice(avg);
+            dto.setTotalRevenue(sum);
+            dto.setName(c.getName());
+            dtos.add(dto);
+        });
+
+        CategoriesByProductsCountRootDto root = new CategoriesByProductsCountRootDto();
+        root.setCategoriesByProductsCountDto(dtos);
+
+        this.xmlParser.exportToFile(root, XML_PATH);
     }
 }
