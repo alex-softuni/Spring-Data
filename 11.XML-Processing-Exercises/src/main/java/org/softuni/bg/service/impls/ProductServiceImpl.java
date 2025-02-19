@@ -1,9 +1,6 @@
 package org.softuni.bg.service.impls;
 
-import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Marshaller;
-import jakarta.xml.bind.Unmarshaller;
 import org.modelmapper.ModelMapper;
 import org.softuni.bg.model.entities.Category;
 import org.softuni.bg.model.entities.Product;
@@ -16,15 +13,16 @@ import org.softuni.bg.service.dtos.exports.ProductsInPriceRangeDto;
 import org.softuni.bg.service.dtos.exports.ProductsInPriceRangeRootDto;
 import org.softuni.bg.service.dtos.imports.ProductSeedRootDto;
 import org.softuni.bg.util.ValidatorUtil;
+import org.softuni.bg.util.XmlParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -35,25 +33,25 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
     private final ValidatorUtil validatorUtil;
     private final ModelMapper modelMapper;
+    private final XmlParser xmlParser;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, UserRepository userRepository, CategoryRepository categoryRepository, ValidatorUtil validatorUtil, ModelMapper modelMapper) {
+    public ProductServiceImpl(ProductRepository productRepository, UserRepository userRepository, CategoryRepository categoryRepository, ValidatorUtil validatorUtil, ModelMapper modelMapper, XmlParser xmlParser) {
         this.productRepository = productRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.validatorUtil = validatorUtil;
         this.modelMapper = modelMapper;
+        this.xmlParser = xmlParser;
     }
 
     @Override
     public void seedProducts() throws JAXBException {
-        JAXBContext context = JAXBContext.newInstance(ProductSeedRootDto.class);
-        Unmarshaller unmarshaller = context.createUnmarshaller();
-        ProductSeedRootDto unmarshal = (ProductSeedRootDto) unmarshaller.unmarshal(new File(XML_PATH));
+        ProductSeedRootDto parse = this.xmlParser.parse(ProductSeedRootDto.class, XML_PATH);
 
         List<Product> products = new ArrayList<>();
 
-        unmarshal.getProducts().forEach(dto -> {
+        parse.getProductSeedDto().forEach(dto -> {
             if (!this.validatorUtil.isValid(dto)) {
                 this.validatorUtil.getViolations(dto).forEach(System.out::println);
                 return;
@@ -78,11 +76,7 @@ public class ProductServiceImpl implements ProductService {
 
         ProductsInPriceRangeRootDto rootDto = new ProductsInPriceRangeRootDto();
         rootDto.setProducts(dto);
-
-        JAXBContext context = JAXBContext.newInstance(ProductsInPriceRangeRootDto.class);
-        Marshaller marshaller = context.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        marshaller.marshal(rootDto, System.out);
+        this.xmlParser.exportToFile(rootDto, XML_PATH);
 
     }
 

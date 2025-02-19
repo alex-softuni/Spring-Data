@@ -14,10 +14,10 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "buyer_id", referencedColumnName = "id")
     private User buyer;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
     private User seller;
 

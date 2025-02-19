@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-
 @Component
 public class ConsoleRunner implements CommandLineRunner {
     private final UserService userService;
@@ -34,6 +32,6 @@ public class ConsoleRunner implements CommandLineRunner {
             productService.seedProducts();
         }
 
-        this.productService.exportProductsInPriceRangeOrderedByPrice(BigDecimal.valueOf(500), BigDecimal.valueOf(1000));
+       // this.productService.exportProductsInPriceRangeOrderedByPrice(BigDecimal.valueOf(500), BigDecimal.valueOf(1000));
     }
 }

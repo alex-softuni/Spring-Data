@@ -1,9 +1,6 @@
 package org.softuni.bg.service.dtos.imports;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,7 +11,7 @@ public class ProductSeedRootDto {
     @XmlElement(name = "product")
     private List<ProductSeedDto> productSeedDto;
 
-    public List<ProductSeedDto> getProducts() {
+    public List<ProductSeedDto> getProductSeedDto() {
         return productSeedDto;
     }
 
@@ -22,3 +19,4 @@ public class ProductSeedRootDto {
         this.productSeedDto = productSeedDto;
     }
 }
+

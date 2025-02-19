@@ -1,9 +1,6 @@
 package org.softuni.bg.service.impls;
 
-import jakarta.validation.ConstraintViolation;
-import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import org.modelmapper.ModelMapper;
 import org.softuni.bg.model.entities.User;
 import org.softuni.bg.model.repositories.UserRepository;
@@ -11,10 +8,9 @@ import org.softuni.bg.service.UserService;
 import org.softuni.bg.service.dtos.imports.UserSeedDto;
 import org.softuni.bg.service.dtos.imports.UserSeedRootDto;
 import org.softuni.bg.util.ValidatorUtil;
+import org.softuni.bg.util.XmlParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.io.File;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,12 +19,14 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final ValidatorUtil validatorUtil;
+    private final XmlParser xmlParser;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, ValidatorUtil validatorUtil) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, ValidatorUtil validatorUtil, XmlParser xmlParser) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.validatorUtil = validatorUtil;
+        this.xmlParser = xmlParser;
     }
 
     @Override
@@ -38,11 +36,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void seedUsers() throws JAXBException {
-        JAXBContext context = JAXBContext.newInstance(UserSeedRootDto.class);
-        Unmarshaller unmarshaller = context.createUnmarshaller();
-        UserSeedRootDto unmarshal = (UserSeedRootDto) unmarshaller.unmarshal(new File(XML_PATH));
+        UserSeedRootDto parse = this.xmlParser.parse(UserSeedRootDto.class, XML_PATH);
 
-        for (UserSeedDto user : unmarshal.getUsers()) {
+        for (UserSeedDto user : parse.getUsers()) {
             if (!this.validatorUtil.isValid(user)) {
                 this.validatorUtil.getViolations(user).forEach(System.out::println);
                 continue;
