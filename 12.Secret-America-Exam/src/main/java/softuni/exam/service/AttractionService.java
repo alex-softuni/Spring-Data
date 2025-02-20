@@ -10,6 +10,6 @@ public interface AttractionService {
 
     String importAttractions() throws IOException;
 
-    String exportAttractions();
+    String exportAttractions() throws IOException;
 
 }

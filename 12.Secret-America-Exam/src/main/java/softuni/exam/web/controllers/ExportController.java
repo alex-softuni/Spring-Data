@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import softuni.exam.service.AttractionService;
 
+import java.io.IOException;
+
 @Controller
 @RequestMapping("/export")
 public class ExportController extends BaseController {
@@ -18,7 +20,7 @@ public class ExportController extends BaseController {
     }
 
     @GetMapping("attractions")
-    public ModelAndView exportVisitors() {
+    public ModelAndView exportVisitors() throws IOException {
 
         String attractions = this.attractionService.exportAttractions();
 

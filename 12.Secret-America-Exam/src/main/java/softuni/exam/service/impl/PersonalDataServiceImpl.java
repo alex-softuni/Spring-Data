@@ -34,9 +34,7 @@ public class PersonalDataServiceImpl implements PersonalDataService {
 
     @Override
     public String readPersonalDataFileContent() throws IOException {
-        String xml = Files.readString(Path.of(FILE_PATH));
-
-        return xml;
+        return Files.readString(Path.of(FILE_PATH));
     }
 
     @Override

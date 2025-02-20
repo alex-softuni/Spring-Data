@@ -27,9 +27,7 @@ public class VisitorServiceImpl implements VisitorService {
 
     @Override
     public String readVisitorsFileContent() throws IOException {
-        String xml = Files.readString(Path.of(FILE_PATH));
-
-        return xml;
+        return Files.readString(Path.of(FILE_PATH));
     }
 
     @Override
