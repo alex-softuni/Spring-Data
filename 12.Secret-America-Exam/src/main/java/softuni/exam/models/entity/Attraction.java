@@ -18,8 +18,8 @@ public class Attraction extends BaseEntity {
     @Column(nullable = false)
     private String type;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "country_id", nullable = false)
     private Country country;
 
     public Attraction() {

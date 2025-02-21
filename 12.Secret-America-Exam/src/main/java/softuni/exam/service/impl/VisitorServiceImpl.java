@@ -17,10 +17,10 @@ import softuni.exam.repository.VisitorRepository;
 import softuni.exam.service.VisitorService;
 import softuni.exam.util.ValidatorUtil;
 import softuni.exam.util.XmlParser;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
 
 
 @Service
@@ -64,14 +64,17 @@ public class VisitorServiceImpl implements VisitorService {
         for (VisitorDto dto : dtos.getVisitorDtos()) {
             String fullName = dto.getFirstName() + " " + dto.getLastName();
 
-            if (this.visitorRepository.findByFullNameOrPersonalDataId(fullName, dto.getPersonalData()).isPresent() || !this.validatorUtil.isValid(dto)) {
+            PersonalData personalData = this.personalDataRepository.findById(dto.getPersonalData()).orElse(null);
+            Country country = this.countryRepository.findById(dto.getCountry()).orElse(null);
+            Attraction attraction = this.attractionRepository.findById(dto.getAttraction()).orElse(null);
+
+            if (this.visitorRepository.findByFullNameOrPersonalDataId(fullName, dto.getPersonalData()).isPresent()
+                    || !this.validatorUtil.isValid(dto)
+                    || personalData == null || country == null || attraction == null) {
                 sb.append("Invalid visitor").append(System.lineSeparator());
                 continue;
             }
 
-            PersonalData personalData = this.personalDataRepository.findById(dto.getPersonalData()).get();
-            Country country = this.countryRepository.findById(dto.getCountry()).get();
-            Attraction attraction = this.attractionRepository.findById(dto.getAttraction()).get();
 
             Visitor visitor = this.modelMapper.map(dto, Visitor.class);
             visitor.setPersonalData(personalData);

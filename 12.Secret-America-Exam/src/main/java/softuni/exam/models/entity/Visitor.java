@@ -11,16 +11,16 @@ public class Visitor extends BaseEntity {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private Attraction attraction;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "personal_data_id", nullable = false)
     private PersonalData personalData;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "country_id", nullable = false)
     private Country country;
 
     public Visitor() {
