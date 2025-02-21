@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import softuni.exam.models.entity.Attraction;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,6 +15,7 @@ public interface AttractionRepository extends JpaRepository<Attraction, Long> {
 
     @Query("SELECT a FROM Attraction a " +
             "WHERE a.type IN('historical site','archaeological site') " +
-            "AND a.elevation >= 300")
-    Attraction findByTypeAndElevationGreaterThan();
+            "AND a.elevation >= 300 " +
+            "ORDER BY a.name,a.country.name")
+    List<Attraction> findAllByTypeAndElevationGreaterThan();
 }

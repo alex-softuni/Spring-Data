@@ -15,6 +15,7 @@ import softuni.exam.util.ValidatorUtil;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -75,8 +76,13 @@ public class AttractionServiceImpl implements AttractionService {
 
     @Override
     public String exportAttractions() {
-        Attraction result = this.attractionRepository.findByTypeAndElevationGreaterThan();
-        System.out.println();
-        return null;
+        StringBuilder sb = new StringBuilder();
+        List<Attraction> attractions = this.attractionRepository.findAllByTypeAndElevationGreaterThan();
+
+        for (Attraction a : attractions) {
+            sb.append(String.format("Attraction with ID%d:%n" +
+                    "***%s - %s at an altitude of %dm. somewhere in %s.%n", a.getId(), a.getName(), a.getDescription(), a.getElevation(), a.getCountry().getName()));
+        }
+        return sb.toString();
     }
 }
