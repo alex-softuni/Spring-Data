@@ -9,7 +9,6 @@ import softuni.exam.models.entity.Attraction;
 import softuni.exam.repository.AttractionRepository;
 import softuni.exam.service.AttractionService;
 import softuni.exam.util.ValidatorUtil;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -63,7 +62,7 @@ public class AttractionServiceImpl implements AttractionService {
     }
 
     @Override
-    public String exportAttractions() throws IOException {
+    public String exportAttractions()  {
         return null;
     }
 }
